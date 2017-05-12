@@ -3,6 +3,7 @@
 #include <malloc.h>
 #include <stdint.h>
 
+
 char tolower(char c)
 {
 	if (c >= 'A' && c <= 'Z')
@@ -52,7 +53,7 @@ int Hex2Ascii(char *hex, char *ascii)             //16进制转ASCII
 		else
 		{
 			
-			debug("it is not Hex");
+			//debug("it is not Hex");
 			return -1;
 		}
 	}
