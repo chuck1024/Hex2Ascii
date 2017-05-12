@@ -2,8 +2,19 @@
 #include <string.h>
 #include <malloc.h>
 #include <stdint.h>
-int Ascii2Hex(char* ascii, char* hex)                 //ASCII 转16进制
 
+char tolower(char c)
+{
+	if (c >= 'A' && c <= 'Z')
+	{
+		return c + 0x20;
+	}
+
+	return c;
+}
+
+
+int Ascii2Hex(char* ascii, char* hex)                 //ASCII2Hex
 {
 	int i, len = strlen(ascii);
 	char chHex[] = "0123456789ABCDEF";
@@ -17,25 +28,37 @@ int Ascii2Hex(char* ascii, char* hex)                 //ASCII 转16进制
 	//hex[len * 3] = '/0';
 	return len * 3;
 }
-int Hex2Ascii(char *hex, char *ascii)             //16进制转ASCII
+int Hex2Ascii(char *hex, char *ascii)             //16杩涘埗杞珹SCII
 {
 	int len = strlen(hex), tlen, i, cnt;
-
 	for (i = 0, cnt = 0, tlen = 0; i<len; i++)
 	{
-		char c = toupper(hex[i]);
-		if ((c >= '0'&& c <= '9') || (c >= 'A'&& c <= 'F'))
+		char c = tolower(hex[i]);
+		if ((c >= '0'&& c <= '9') || (c >= 'a' && c <= 'f'))
 		{
-			uint8_t t = (c >= 'A') ? c - 'A' + 10 : c - '0';
-			if (cnt)
-				ascii[tlen++] += t, cnt = 0;
-			else
-				ascii[tlen] = t << 4, cnt = 1;
+			uint8_t t = (c >= 'a') ? c - 'a' + 10 : c - '0';
+			if (cnt == 1)
+			{
+				ascii[tlen] |= t;
+				cnt = 0;
+				tlen++;
+			}
+			else if (cnt == 0)
+			{
+				ascii[tlen] = t << 4;
+				cnt = 1;
+			} 
+		}
+		else
+		{
+			
+			debug("it is not Hex");
+			return -1;
 		}
 	}
-
-	return tlen;
+	return 0;
 }
+
 int main()
 {
 	char ascii[20] ="adc";
